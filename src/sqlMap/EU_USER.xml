@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eucom.dao.EuUserDAO"> 
+
+  	
+	<!-- 회원 가입 -->
+  	<insert id="insertUser" parameterType="hashmap" >
+		INSERT INTO EU_USER
+        (        
+				USER_ID      
+		,		USER_PW   
+		,       KIND   
+		,       NAME_KR   
+		,       GRADE   
+		,       STUDENT_NUM   
+		,       MAJOR   
+		,       ADDRESS   
+		,       PHONE   
+		,       EMAIL   
+		,       STATUS   
+		,       REG_DATE   
+        )
+        VALUES 
+        (   
+        		#{USER_ID}
+		,		PASSWORD(#{USER_PW})
+		,		#{KIND}        
+		,		#{NAME_KR}
+		,		#{GRADE}
+		,		#{STUDENT_NUM}
+		,		#{MAJOR}
+		,		#{ADDRESS}		
+		,		#{PHONE}
+		,		#{EMAIL}
+		,		#{STATUS}
+		,		NOW()
+	  	) 
+	</insert> 
+	
+	<select id="login" resultType="hashmap" parameterType="hashmap">
+	    SELECT  
+	    		USER_SEQ      
+		,		USER_ID       
+		,		NAME_KR    
+		,		KIND 	
+		, 		GRADE
+		, 		STUDENT_NUM
+		, 		MAJOR
+			
+		FROM    
+				EU_USER   
+		WHERE   
+				USER_ID = #{USER_ID} 
+		AND     USER_PW = PASSWORD(#{USER_PW}) 
+		AND     STATUS = #{STATUS} 
+	</select>
+	
+	
+	<select id="selectList" resultType="hashmap" parameterType="hashmap">
+	    SELECT  
+	    		USER_SEQ      
+		,		USER_ID       
+		,		NAME_KR    
+		,		KIND 	
+		, 		GRADE
+		, 		STUDENT_NUM
+		, 		MAJOR
+		,       PHONE
+		,       EMAIL
+		,       REG_DATE
+		,       STATUS
+			
+		FROM    
+				EU_USER   
+		WHERE   1 = 1 
+		
+		ORDER BY USER_SEQ DESC
+      <if test="(STARTROW != null and STARTROW != '') or  (ENDROW != null and ENDROW != '')">
+      LIMIT ${STARTROW}, ${ENDROW}
+      </if>
+	</select>
+	
+	<select id="selectOne" resultType="hashmap" parameterType="hashmap">
+	    SELECT  
+	    		USER_SEQ      
+		,		USER_ID      
+		,       KIND   
+		,       NAME_KR   
+		,       GRADE   
+		,       STUDENT_NUM   
+		,       MAJOR   
+		,       ADDRESS   
+		,       PHONE   
+		,       EMAIL   
+		,       STATUS   
+		,       REG_DATE  
+			
+		FROM    
+				EU_USER   
+		WHERE   
+				USER_SEQ = #{USER_SEQ} 
+		 
+	</select>
+	 
+	 
+	  <update id="update" parameterType="hashMap">
+		 UPDATE EU_USER 
+		 SET       
+		        STATUS       = #{STATUS}
+		<if test="NAME_KR != null and NAME_KR != '' ">
+		 ,		NAME_KR		 = #{NAME_KR}
+		</if>
+		<if test="GRADE != null and GRADE != '' ">
+		 ,		GRADE        = #{GRADE}
+		</if>
+		<if test="MAJOR != null and MAJOR != '' ">
+		 ,		MAJOR        = #{MAJOR}
+		</if>
+		<if test="PHONE != null and PHONE != '' ">
+		 ,		PHONE        = #{PHONE}
+		</if>
+		<if test="EMAIL != null and EMAIL != '' ">
+		 ,		EMAIL        = #{EMAIL}
+		</if>
+		<if test="ADDRESS != null and ADDRESS != '' ">
+		 ,		ADDRESS      = #{ADDRESS}
+		</if>
+		 ,		UPD_DATE 	 = NOW()
+		 ,		UPD_USER_SEQ = #{USER_SEQ}
+		 WHERE  USER_SEQ	 = #{USER_SEQ}
+    </update>  
+    
+    
+	<delete id="delete" parameterType="hashmap">
+		DELETE FROM
+		EU_USER
+		WHERE USER_SEQ	 = #{USER_SEQ}
+	</delete>
+	
+	 
+
+</mapper>

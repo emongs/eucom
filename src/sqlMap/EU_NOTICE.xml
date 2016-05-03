@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eucom.dao.EuNoticeDAO">
+
+	<!-- 공지사항 입력 -->
+	<insert id="insertNoticeNews" parameterType="hashmap">
+		INSERT INTO 
+			EU_NOTICE
+		(
+			NEWS_TITLE,
+			NEWS_CONTENT,
+			NEWS_REG_DATE
+		)
+		VALUES
+		(
+			#{NEWS_TITLE},
+			#{NEWS_CONTENT},
+			NOW()
+		)
+	</insert>
+
+	<!-- 리스트보여주기 -->
+	<select id="selectNoticeNewsList" parameterType="hashmap"
+		resultType="hashmap">
+		SELECT
+			NEWS_SEQ,
+			NEWS_TITLE,
+			NEWS_CONTENT
+		FROM
+			EU_NOTICE
+		WHERE 1=1
+
+		ORDER BY NEWS_SEQ DESC
+		LIMIT 0,10;
+	</select>
+
+	<select id="selectNoticeNewsOne" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			NEWS_SEQ,
+			NEWS_TITLE,
+			NEWS_CONTENT
+		FROM
+			EU_NOTICE
+		WHERE
+			NEWS_SEQ = #{NEWS_SEQ}
+	</select>
+
+	<update id="updateNoticeNews" parameterType="hashMap">
+		 UPDATE EU_NOTICE
+		 SET       
+				NEWS_TITLE		 = #{NEWS_TITLE}
+		<if test="NEWS_CONTENT != null and NEWS_CONTENT != '' ">
+		 ,		NEWS_CONTENT        = #{NEWS_CONTENT}
+		</if>
+		 ,		NEWS_UPD_DATE 	 = NOW()
+		 WHERE  NEWS_SEQ	 = #{NEWS_SEQ}
+    </update>  
+    
+    <delete id="deleteNoticeNews" parameterType="hashmap">
+		DELETE FROM
+		EU_NOTICE
+		WHERE NEWS_SEQ	 = #{NEWS_SEQ}
+	</delete>
+	
+</mapper>
